@@ -3,10 +3,21 @@ import javax.swing.JOptionPane;
 import java.sql.*;
 
 
+
 public class Main {
 
     public static void main(String[] args) {
-        /*
+        String []p = {"versatile", "Test"};
+        Weapon sword = new Weapon(1, "Longsword", 3, 4, 1,8, p );
+        sword.display();
+        System.out.println(sword.damage());
+        System.out.println(sword.damage());
+        System.out.println(sword.damage());
+        System.out.println(sword.damage());
+
+    }
+
+    void guitest() {
         String name = JOptionPane.showInputDialog("What is your name?");
         String message = String.format("Welcome, %s, to Java Programming!", name);
 
@@ -19,22 +30,50 @@ public class Main {
         String message1 = String.format("Welcome, %s, to Java Programming!", x + y);
         JOptionPane.showMessageDialog(null, message1);
 
-         */
 
-        String jdbcURL = "jdbc:postgresql://localhost:8877/DND";
-        String username = "postgres";
-        String password = "test";
+    }
+
+    static void insert() {
+
+        try {
+            String jdbcURL = "jdbc:postgresql://localhost:8877/DND";
+            String username = "postgres";
+            String password = "test";
+            Connection connection = DriverManager.getConnection(jdbcURL, username, password);
+            Statement statement = connection.createStatement();
+            System.out.println("Connected to PostgreSQL");
+
+            String sql = "INSERT INTO public.weapon (id, name, cost, damage, damage_type, weight) "
+                    + "VALUES (2, 'Axe', 10, '1d8', 'slashing', 4 )";
+
+            int rows = statement.executeUpdate(sql);
+            if (rows > 1) {
+                System.out.println("A new weapon inserted");
+            }
+            connection.close();
+
+        } catch (SQLException e) {
+            System.out.println("Error in connection to PostgresSQL server");
+            e.printStackTrace();
+        }
+
+    }
+
+    static void display() {
 
         String query1 = "SELECT * FROM public.weapon;";
 
         try {
-            Connection connection = DriverManager.getConnection(jdbcURL, username, password);
-            System.out.println("Connected to PostgreSQL");
+            String jdbcURL = "jdbc:postgresql://localhost:8877/DND";
+            String username = "postgres";
+            String password = "test";
 
+            Connection connection = DriverManager.getConnection(jdbcURL, username, password);
             Statement statement = connection.createStatement();
             ResultSet result = statement.executeQuery(query1);
 
-            System.out.printf("id, name, cost, damage, damage_type, weight\n");
+            System.out.print("id, name, cost, damage, damage_type, weight\n");
+
             while(result.next()) {
                 int id = result.getInt("id");
                 String name = result.getString("name");
@@ -48,26 +87,6 @@ public class Main {
             }
 
             connection.close();
-        } catch (SQLException e) {
-            System.out.println("Error in connection to PostgresSQL server");
-            e.printStackTrace();
-        }
-
-
-    }
-
-    void insert(Connection connection, Statement statement) {
-
-        try {
-
-            String sql = "INSERT INTO public.weapon (id, name, cost, damage, damage_type, weight) "
-                    + "VALUES (2, 'Axe', 10, '1d8', 'slashing', 4 )";
-
-            int rows = statement.executeUpdate(sql);
-            if (rows > 1) {
-                System.out.println("A new weapon inserted");
-            }
-
         } catch (SQLException e) {
             System.out.println("Error in connection to PostgresSQL server");
             e.printStackTrace();
