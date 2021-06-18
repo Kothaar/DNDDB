@@ -20,8 +20,8 @@ public class Item {
         this.id = id;
         try {
             db_get();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
