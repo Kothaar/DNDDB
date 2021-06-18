@@ -1,23 +1,30 @@
 package dev.kellyburton;
 import javax.swing.JOptionPane;
 import java.sql.*;
-
+import java.util.Arrays;
+import java.util.Collections;
 
 
 public class Main {
 
     public static void main(String[] args) {
-        String []p = {"versatile", "Test"};
-        Weapon sword = new Weapon(1, "Longsword", 3, 4, 1,8, p );
+        String[] p = {"versatile", "Test", "test3"};
+        Weapon sword = new Weapon(1, "Longsword", 3, 4, 1,8, "Slicing" );
         sword.display();
-        System.out.println(sword.damage());
-        System.out.println(sword.damage());
-        System.out.println(sword.damage());
-        System.out.println(sword.damage());
+        int[] rolls = new int[1000];
+        int max = 0;
+        for(int i = 0; i < 1000; i++){
+            rolls[i] = sword.damage();
+            if(rolls[i] >= max)
+                max = rolls[i];
+        }
+
+        Weapon sword2 = new Weapon(1);
+        sword2.display();
 
     }
 
-    void guitest() {
+    void gui_test() {
         String name = JOptionPane.showInputDialog("What is your name?");
         String message = String.format("Welcome, %s, to Java Programming!", name);
 
