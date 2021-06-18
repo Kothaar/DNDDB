@@ -1,5 +1,6 @@
 -- tables
 -- table: weapon
+CREATE SEQUENCE public.weapon_id_seq;
 CREATE TABLE weapon (
 	id bigint NOT NULL DEFAULT nextval('weapon_id_seq') PRIMARY KEY,
 	name varchar(50) NOT NULL,
@@ -11,6 +12,7 @@ CREATE TABLE weapon (
 );
 
 -- table: property
+CREATE SEQUENCE public.property_id_seq;
 CREATE TABLE property (
 	id bigint NOT NULL DEFAULT nextval('property_id_seq') PRIMARY KEY,
 	name varchar(32) NOT NULL,
