@@ -15,22 +15,28 @@ public class Weapon extends Item{
         this.damage_type = damage_type;
     }
 
-    Weapon(int id) throws SQLException {
+    Weapon(int id) {
         super(id);
-        db_get(id);
+        String query = String.format(
+                "SELECT number_dice, dice_type, damage_type " +
+                "FROM public.weapon " +
+                "WHERE id = %d;", id);
+        try {
+            db_get(query);
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+        }
     }
 
-    private void db_get(int id) throws SQLException {
+    private void db_get(String query) throws SQLException {
         String jdbcURL = "jdbc:postgresql://localhost:8877/DND";
         String username = "postgres";
         String password = "test";
         Connection connection = DriverManager.getConnection(jdbcURL, username, password);
         Statement statement = connection.createStatement();
         System.out.println("Connected to PostgreSQL");
-        String query1 = String.format(  "SELECT number_dice, dice_type, damage_type " +
-                                        "FROM public.weapon " +
-                                        "WHERE id = %d;", id);
-        ResultSet result = statement.executeQuery(query1);
+        ResultSet result = statement.executeQuery(query);
         while(result.next()) {
             this.num_dice = result.getInt("number_dice");
             this.dice_type = result.getInt("dice_type");
@@ -49,7 +55,6 @@ public class Weapon extends Item{
     public int damage() {
         Random r = new Random();
         return r.nextInt(6)+1;
-
     }
 
 }
